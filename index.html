@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Happy Birthday Noopur</title>
+    <style>
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            min-height: 100vh;
+            overflow: hidden;
+            cursor: pointer;
+            font-family: 'Pacifico', cursive;
+        }
+
+        .pattern-container {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .elephant {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .elephant svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .elephant path, .elephant circle {
+            stroke: #1a237e;
+            stroke-width: 1;
+            fill: none;
+        }
+
+        .balloon {
+            position: absolute;
+            width: 50px;
+            height: 60px;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .balloon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .letter {
+            position: absolute;
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #e91e63;
+            user-select: none;
+            transition: all 0.3s ease;
+            z-index: 2;
+            white-space: nowrap;
+        }
+
+        .letter:hover {
+            transform: scale(1.2);
+            color: #ff1493;
+        }
+
+        #musicControl {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 10;
+            background: white;
+            border: 1px solid #1a237e;
+            color: #1a237e;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border-radius: 50px;
+        }
+
+        #musicControl:hover {
+            background: #1a237e;
+            color: white;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff0;
+            border-radius: 50%;
+            animation: confetti-fall 2s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-10vh) rotate(0deg); }
+            100% { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* Cake Styles */
+        .cake-container {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            text-align: center;
+        }
+
+        .cake {
+            width: 100px;
+            height: 60px;
+            background: #8B4513;
+            border-radius: 10px 10px 0 0;
+            position: relative;
+        }
+
+        .cake::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            width: 80px;
+            height: 20px;
+            background: #FFD700;
+            border-radius: 5px;
+        }
+
+        .candle {
+            width: 6px;
+            height: 30px;
+            background: #FFF;
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .flame {
+            width: 10px;
+            height: 10px;
+            background: #FF4500;
+            border-radius: 50% 50% 50% 50%;
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            animation: flicker 0.1s infinite alternate, glow 1s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px #FF4500, 0 0 10px #FF4500; }
+            100% { box-shadow: 0 0 10px #FF4500, 0 0 20px #FF4500; }
+        }
+
+        .cake-container:hover .flame {
+            opacity: 1;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Audio Element -->
+    <audio id="birthdayMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Your existing HTML content -->
+    <div class="pattern-container" id="container">
+        <!-- Cake with Candle -->
+        <div class="cake-container">
+            <div class="cake">
+                <div class="candle"></div>
+                <div class="flame"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Music Control Button -->
+    <button id="musicControl">♪ Play</button>
+
+    <script>
+        // Music Control
+        const music = document.getElementById('birthdayMusic');
+        const musicControl = document.getElementById('musicControl');
+
+        musicControl.addEventListener('click', () => {
+            if (music.paused) {
+                music.play();
+                musicControl.textContent = '♪ Pause';
+            } else {
+                music.pause();
+                musicControl.textContent = '♪ Play';
+            }
+        });
+
+        // Your existing JavaScript code
+        const container = document.getElementById('container');
+        const message = "Happy Birthday Noopur";
+        const balloonColors = ['#FF69B4', '#FF1493', '#9370DB', '#4169E1', '#00CED1', '#FF6347'];
+        const elephantTemplate = `
+            <svg viewBox="0 0 100 100">
+                <path class="body" d="M30,50 C30,35 70,35 70,50 C70,65 30,65 30,50 Z"/>
+                <path class="spiral" d="M25,45 C20,45 20,35 25,35 C30,35 30,45 25,45"/>
+                <path class="trunk" d="M50,60 C45,65 55,70 50,75"/>
+                <circle cx="45" cy="45" r="1"/>
+                <circle cx="55" cy="45" r="1"/>
+                <path class="spray" d="M75,50 Q80,45 75,40"/>
+            </svg>
+        `;
+
+        function createBalloonSVG(color) {
+            return `
+                <svg viewBox="0 0 50 60">
+                    <path d="M25,50 Q25,55 22,60 L28,60 Q25,55 25,50" fill="${color}" />
+                    <path d="M25,0 C12,0 0,12 0,25 C0,38 12,50 25,50 C38,50 50,38 50,25 C50,12 38,0 25,0" fill="${color}" />
+                    <path d="M25,45 C15,45 7,37 7,27 C7,17 15,9 25,9" fill="rgba(255,255,255,0.2)" />
+                </svg>
+            `;
+        }
+
+        // Create letters
+        const lettersContainer = document.createElement('div');
+        lettersContainer.style.position = 'absolute';
+        lettersContainer.style.top = '50%';
+        lettersContainer.style.left = '50%';
+        lettersContainer.style.transform = 'translate(-50%, -50%)';
+        lettersContainer.style.whiteSpace = 'nowrap';
+        container.appendChild(lettersContainer);
+
+        const letterSpacing = 30; // Space between letters
+        let totalWidth = 0;
+
+        message.split('').forEach((char, i) => {
+            if (char !== ' ') {
+                const letter = document.createElement('div');
+                letter.className = 'letter';
+                letter.textContent = char;
+                letter.style.left = `${totalWidth}px`; // Position letters horizontally
+                lettersContainer.appendChild(letter);
+                totalWidth += letterSpacing; // Add spacing between letters
+            } else {
+                totalWidth += letterSpacing; // Add spacing for spaces
+            }
+        });
+
+        // Center the letters container
+        lettersContainer.style.left = `calc(50% - ${totalWidth / 2}px)`;
+
+        // Create elephants (reduced number for performance)
+        for (let i = 0; i < 30; i++) {
+            const elephant = document.createElement('div');
+            elephant.className = 'elephant';
+            elephant.innerHTML = elephantTemplate;
+            elephant.style.left = Math.random() * (window.innerWidth - 40) + 'px';
+            elephant.style.top = Math.random() * (window.innerHeight - 40) + 'px';
+            container.appendChild(elephant);
+        }
+
+        // Create balloons (reduced number for performance)
+        const balloons = [];
+        for (let i = 0; i < 15; i++) {
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            balloon.innerHTML = createBalloonSVG(balloonColors[i % balloonColors.length]);
+            balloon.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+            balloon.style.top = Math.random() * (window.innerHeight - 60) + 'px';
+            container.appendChild(balloon);
+            balloons.push(balloon);
+        }
+
+        // Floating animation function
+        function updatePositions(elements, amplitude) {
+            elements.forEach(el => {
+                const startLeft = parseFloat(el.style.left);
+                const startTop = parseFloat(el.style.top);
+                const time = Date.now() / 1000;
+                const offsetX = Math.sin(time + startLeft) * amplitude;
+                const offsetY = Math.cos(time + startTop) * amplitude;
+                
+                el.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+            });
+            requestAnimationFrame(() => updatePositions(elements, amplitude));
+        }
+
+        const letters = document.querySelectorAll('.letter');
+        const elephants = document.querySelectorAll('.elephant');
+
+        updatePositions(elephants, 10);
+        updatePositions(balloons, 20);
+
+        // Align elements on hover
+        container.addEventListener('mouseenter', () => {
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+
+            // Center letters
+            lettersContainer.style.top = `${centerY - 100}px`; // Adjust vertical position
+
+            // Arrange balloons in a heart shape
+            const heartRadius = 150;
+            balloons.forEach((balloon, i) => {
+                const angle = (Math.PI * 2 * i) / balloons.length;
+                const x = centerX + heartRadius * (16 * Math.pow(Math.sin(angle), 3));
+                const y = centerY - heartRadius * (13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle));
+                balloon.style.left = `${x}px`;
+                balloon.style.top = `${y}px`;
+                balloon.style.transform = 'none';
+            });
+        });
+
+        // Return to floating on mouse leave
+        container.addEventListener('mouseleave', () => {
+            // Randomize all positions
+            [...elephants, ...balloons].forEach(element => {
+                element.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+                element.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+            });
+        });
+
+        // Pop balloons on click
+        const popSound = document.getElementById('popSound');
+        balloons.forEach(balloon => {
+            balloon.addEventListener('click', () => {
+                balloon.style.transform = 'scale(0)';
+                popSound.play();
+                setTimeout(() => balloon.remove(), 300);
+            });
+        });
+
+        // Confetti effect
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) { // Reduced number for performance
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                container.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 2000);
+            }
+        }
+
+        // Trigger confetti on hover
+        container.addEventListener('mouseenter', createConfetti);
+    </script>
+</body>
+</html>
